@@ -1,4 +1,4 @@
-package br.com.linkzera.todolist.user;
+package br.com.linkzera.todolist.task;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -12,17 +12,21 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
-@Entity(name = "tb_users")
-public class UserModel {
+@Entity(name = "tb_tasks")
+public class TaskModel {
 
   @Id
   @GeneratedValue(generator = "UUID")
   private UUID id;
 
+  private String title;
+  private String description;
+
+  @Column(columnDefinition = "boolean default false")
+  private boolean done;
+
   @Column(unique = true)
-  private String username;
-  private String password;
-  private String name;
+  private UUID userId;
 
   @CreationTimestamp
   private LocalDateTime createdAt;
