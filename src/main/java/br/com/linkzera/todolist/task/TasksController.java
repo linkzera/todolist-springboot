@@ -8,12 +8,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.linkzera.todolist.user.IUserRepository;
+
 @RestController
 @RequestMapping("/tasks")
 public class TasksController {
 
   @Autowired
   private ITaskRepository taskRepository;
+
+  @Autowired
+  private IUserRepository userRepository;
   
   @PostMapping("/")
   public ResponseEntity<Object> create(@RequestBody TaskModel taskModel) {
@@ -24,6 +29,10 @@ public class TasksController {
     }
 
     if(taskModel.getUserId() == null) return ResponseEntity.badRequest().body("Usuário não informado!");
+
+    var user = this.userRepository.findById(taskModel.getUserId());
+
+    if(user.isEmpty()) return ResponseEntity.badRequest().body("Usuário não encontrado!");
     
     var taskCreated = this.taskRepository.save(taskModel);
     return ResponseEntity.ok(taskCreated);

@@ -25,7 +25,6 @@ public class TaskModel {
   @Column(columnDefinition = "boolean default false")
   private boolean done;
 
-  @Column(unique = true)
   private UUID userId;
 
   @CreationTimestamp
