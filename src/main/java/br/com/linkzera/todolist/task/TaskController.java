@@ -12,7 +12,7 @@ import br.com.linkzera.todolist.user.IUserRepository;
 
 @RestController
 @RequestMapping("/tasks")
-public class TasksController {
+public class TaskController {
 
   @Autowired
   private ITaskRepository taskRepository;
