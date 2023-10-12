@@ -1,6 +1,7 @@
 package br.com.linkzera.todolist.task;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,8 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
-
   @Autowired
   private ITaskRepository taskRepository;
-
   @Autowired
   private IUserRepository userRepository;
 
@@ -62,23 +61,16 @@ public class TaskController {
   }
 
   @GetMapping("/")
-  public ResponseEntity<Object> list(HttpServletRequest request) {
+  public List<TaskModel> list(HttpServletRequest request) {
     var user = (UserModel) request.getAttribute("user");
-
     var tasks = this.taskRepository.findByUserId(user.getId());
-
-    return ResponseEntity.ok(tasks);
+    return tasks;
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Object> getById(@PathVariable("id") UUID id) {
-    var task = this.taskRepository.findById(id);
-
-    if (task.isEmpty()) {
-      return ResponseEntity.badRequest().body("Tarefa não encontrada!");
-    }
-
-    return ResponseEntity.ok(task.get());
+  public TaskModel getById(@PathVariable("id") UUID id) {
+    var task = this.taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada!"));
+    return task;
   }
 
   @PutMapping("/status/{id}")
