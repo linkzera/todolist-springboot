@@ -50,6 +50,8 @@ public class FilterTaskAuth extends OncePerRequestFilter {
       return;
     }
 
+    request.setAttribute("user", user);
+
     filterChain.doFilter(request, response);
   }
 
