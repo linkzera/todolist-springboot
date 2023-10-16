@@ -11,7 +11,6 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import br.com.linkzera.todolist.user.IUserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -62,3 +61,4 @@ public class FilterTaskAuth extends OncePerRequestFilter {
   }
 
 }
+

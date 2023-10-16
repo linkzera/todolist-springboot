@@ -21,6 +21,7 @@ import br.com.linkzera.todolist.user.UserModel;
 import br.com.linkzera.todolist.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 
+
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -63,14 +64,12 @@ public class TaskController {
   @GetMapping("/")
   public List<TaskModel> list(HttpServletRequest request) {
     var user = (UserModel) request.getAttribute("user");
-    var tasks = this.taskRepository.findByUserId(user.getId());
-    return tasks;
+      return this.taskRepository.findByUserId(user.getId());
   }
 
   @GetMapping("/{id}")
   public TaskModel getById(@PathVariable("id") UUID id) {
-    var task = this.taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada!"));
-    return task;
+      return this.taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada!"));
   }
 
   @PutMapping("/status/{id}")
@@ -104,9 +103,11 @@ public class TaskController {
   @DeleteMapping("/{id}")
   public ResponseEntity<Object> delete(@PathVariable("id") UUID id, HttpServletRequest request) {
     var user = (UserModel) request.getAttribute("user");
-    var task = this.taskRepository.findById(id).orElse(null);
+    var task = this.taskRepository.findById(id);
 
-    if (task.getUserId().compareTo(user.getId()) != 0) {
+    if(task.isEmpty()) return ResponseEntity.badRequest().body("Tarefa não existe");
+
+    if (task.get().getUserId().compareTo(user.getId()) != 0) {
       return ResponseEntity.badRequest().body("Tarefa não pertence ao usuário!");
     }
 
