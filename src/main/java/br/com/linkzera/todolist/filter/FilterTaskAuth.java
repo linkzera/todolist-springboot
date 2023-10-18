@@ -24,7 +24,6 @@ public class FilterTaskAuth extends OncePerRequestFilter {
       throws ServletException, IOException {
 
     var token = request.getHeader("Authorization");
-
     if (token == null || token.isEmpty()) {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token não informado!");
       return;
@@ -56,9 +55,8 @@ public class FilterTaskAuth extends OncePerRequestFilter {
 
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) {
-      String path = request.getServletPath();
-      return path.startsWith("/users/");
+    String path = request.getServletPath();
+    return path.startsWith("/users/");
   }
 
 }
-

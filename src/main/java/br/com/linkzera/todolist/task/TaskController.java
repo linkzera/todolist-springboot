@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,7 +21,6 @@ import br.com.linkzera.todolist.user.IUserRepository;
 import br.com.linkzera.todolist.user.UserModel;
 import br.com.linkzera.todolist.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
-
 
 @RestController
 @RequestMapping("/tasks")
@@ -64,12 +64,12 @@ public class TaskController {
   @GetMapping("/")
   public List<TaskModel> list(HttpServletRequest request) {
     var user = (UserModel) request.getAttribute("user");
-      return this.taskRepository.findByUserId(user.getId());
+    return this.taskRepository.findByUserId(user.getId());
   }
 
   @GetMapping("/{id}")
   public TaskModel getById(@PathVariable("id") UUID id) {
-      return this.taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada!"));
+    return this.taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Tarefa não encontrada!"));
   }
 
   @PutMapping("/status/{id}")
@@ -105,7 +105,8 @@ public class TaskController {
     var user = (UserModel) request.getAttribute("user");
     var task = this.taskRepository.findById(id);
 
-    if(task.isEmpty()) return ResponseEntity.badRequest().body("Tarefa não existe");
+    if (task.isEmpty())
+      return ResponseEntity.badRequest().body("Tarefa não existe");
 
     if (task.get().getUserId().compareTo(user.getId()) != 0) {
       return ResponseEntity.badRequest().body("Tarefa não pertence ao usuário!");
